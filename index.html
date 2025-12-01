@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+        <!-- ENTRADA DE DATOS -->
+    <!-- Formulario, concepto (text), importe (number), tipo (select) -->
+    <form id="formulario">
+        <label for="concepto">Concepto:</label>
+        <input type="text" id="concepto" name="concepto" required>
+
+        <label for="importe">Importe:</label>
+        <input type="number" id="importe" name="importe" required step="0.01" min="0">
+        
+
+        <label for="tipo">Tipo:</label>
+        <select id="tipo" name="tipo" required>
+            <option value="ingreso">Ingreso</option>
+            <option value="gasto">Gasto</option>
+        </select>
+
+        <button type="submit">Registrar Movimiento</button>
+    </form>
+
+    <!-- SALIDA DE DATOS -->
+
+
+    <!-- Tabla con Concepto, Tipo y Importe -->
+    <table border="1">
+        <!-- Las propiedades de encabezado -->
+        <thead>
+            <tr>
+                <th>Concepto</th>
+                <th>Tipo</th>
+                <th>Importe</th>
+            </tr>
+        </thead>
+        <!-- Contenido -->
+        <tbody id="introMovimientos">
+            <!-- <tr>
+                <td>${concepto}</td>
+                <td>${tipo}</td>
+                <td>${importe}</td>
+            </tr> -->
+        </tbody>
+
+        <!-- Balance -->
+        <p id="balanceIngresos"></p>
+        <p id="balanceGastos"></p>
+        <p id="balanceTotal"></p>
+
+
+
+
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
