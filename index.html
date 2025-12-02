@@ -1,62 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/styles.css">
-</head>
-<body>
-        <!-- ENTRADA DE DATOS -->
-    <!-- Formulario, concepto (text), importe (number), tipo (select) -->
-    <form id="formulario">
-        <label for="concepto">Concepto:</label>
-        <input type="text" id="concepto" name="concepto" required>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+        <link rel="stylesheet" href="css/styles.css" />
+    </head>
+    <body>
 
-        <label for="importe">Importe:</label>
-        <input type="number" id="importe" name="importe" required step="0.01" min="0">
-        
+        <div class="container">
 
-        <label for="tipo">Tipo:</label>
-        <select id="tipo" name="tipo" required>
-            <option value="ingreso">Ingreso</option>
-            <option value="gasto">Gasto</option>
-        </select>
+            <!-- HEADER -->
+            <header>
+                <h1>Gestión Contable Familiar</h1>
+            </header>
+    
+            <!-- ENTRADA DE DATOS -->
+            <!-- Formulario, concepto (text), importe (number), tipo (select) -->
+            <form class="formulario" id="formulario">
+                <label for="concepto">Concepto</label>
+                <input type="text" id="concepto" name="concepto" required />
+    
+                <label for="importe">Importe</label>
+                <input
+                    type="number"
+                    id="importe"
+                    name="importe"
+                    required
+                    step="0.01"
+                    min="0"
+                />
+    
+                <label for="tipo">Tipo</label>
+                <select id="tipo" name="tipo" required>
+                    <option value="ingreso">Ingreso</option>
+                    <option value="gasto">Gasto</option>
+                </select>
+    
+                <button class="button" type="submit">Registrar Movimiento</button>
+            </form>
+    
+            <!-- SALIDA DE DATOS -->
+            <!-- Balance -->
+            <section class="totalIngresos">
+                <span class="totalIngresos__titulo">Ingresos Totales</span>
+                <span class="totalIngresos__numeros" id="balanceIngresos"></span>
+            </section>
+            <section class="totalGastos">
+                <span class="totalGastos__titulo">Gastos Totales</span>
+                <span class="totalGastos__numeros" id="balanceGastos"></span>
+            </section>
+            <section class="totalBalance">
+                <span class="totalBalance__titulo">Balance Neto</span>
+                <span class="totalBalance__numeros" id="balanceTotal"></span>
+            </section>
+    
+            <!-- Tabla con Concepto, Tipo y Importe -->
+            <section class="registros">
+                <table class="registros__tabla">
+                    <!-- Las propiedades de encabezado -->
+                    <thead class="propiedades__tabla">
+                        <tr>
+                            <th>Concepto</th>
+                            <th>Tipo</th>
+                            <th>Importe</th>
+                        </tr>
+                    </thead>
+                    <!-- Contenido -->
+                    <tbody id="introMovimientos"></tbody>
+                </table>
+            </section>
+        </div>
 
-        <button type="submit">Registrar Movimiento</button>
-    </form>
-
-    <!-- SALIDA DE DATOS -->
-
-
-    <!-- Tabla con Concepto, Tipo y Importe -->
-    <table border="1">
-        <!-- Las propiedades de encabezado -->
-        <thead>
-            <tr>
-                <th>Concepto</th>
-                <th>Tipo</th>
-                <th>Importe</th>
-            </tr>
-        </thead>
-        <!-- Contenido -->
-        <tbody id="introMovimientos">
-            <!-- <tr>
-                <td>${concepto}</td>
-                <td>${tipo}</td>
-                <td>${importe}</td>
-            </tr> -->
-        </tbody>
-
-        <!-- Balance -->
-        <p id="balanceIngresos"></p>
-        <p id="balanceGastos"></p>
-        <p id="balanceTotal"></p>
-
-
-
-
-
-    <script type="module" src="js/main.js"></script>
-</body>
+        <!-- Cargar Supabase desde CDN -->
+        <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+        <script type="module" src="js/main.js"></script>
+    </body>
 </html>

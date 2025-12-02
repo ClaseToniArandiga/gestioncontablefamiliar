@@ -1,6 +1,49 @@
 // IMPORTAR un array, porque lo vamos utilizar
 import { movimientos } from './data.js';
 
+// IMPORTAR supabase desde CDN (para proyectos sin bundler)
+// Configuración de Supabase
+const supabaseUrl = 'https://kufbnscaaljjpybnaabg.supabase.co'
+// IMPORTANTE: Reemplaza 'TU_ANON_KEY_AQUI' con tu clave anon/public de Supabase
+const supabaseKey = 'sb_publishable_k-sc2ODvAUFdkmewFX5_HA_o536dkkK'
+
+// Crear cliente de Supabase (se inicializará después de cargar el script)
+let supabase = null;
+
+// Función para inicializar Supabase
+function initSupabase() {
+    if (window.supabase) {
+        supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        console.log('Supabase inicializado correctamente');
+    } else {
+        console.error('Error: La librería de Supabase no se ha cargado');
+    }
+}
+
+// Función para guardar movimiento en Supabase
+async function guardarEnSupabase(movimiento) {
+    if (!supabase) {
+        console.error('Supabase no está inicializado');
+        return null;
+    }
+    
+    const { data, error } = await supabase
+        .from('movimientos')
+        .insert([movimiento])
+        .select();
+    
+    if (error) {
+        console.error('Error al guardar en Supabase:', error.message);
+        return null;
+    }
+    
+    console.log('Movimiento guardado en Supabase:', data);
+    return data;
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initSupabase);
+
 
 // DOM de los nodos del formulario
 const form = document.getElementById('formulario');
@@ -12,7 +55,7 @@ const tipo = document.getElementById('tipo');
 // **********************************
 // Espera al evento del botón submit
 // Evento submit del formulario
-form.addEventListener('submit', function(event) {
+form.addEventListener('submit', async function(event) {
     event.preventDefault(); // Prevenir el envío del formulario por defecto
 
     // Obtener los valores del formulario
@@ -27,18 +70,25 @@ form.addEventListener('submit', function(event) {
         tipo: tipoValue
     };
 
-    // Añadir el nuevo movimiento al array
-    movimientos.push(movimiento);
+    // Guardar en Supabase
+    const resultado = await guardarEnSupabase(movimiento);
+    
+    if (resultado) {
+        // Solo añadir al array local si se guardó correctamente en Supabase
+        movimientos.push(movimiento);
+        
+        // Limpiar el formulario
+        form.reset();
 
-    // Limpiar el formulario
-    form.reset();
+        // Mostrar los movimientos en la consola
+        console.log(movimientos)
 
-    // Mostrar los movimientos en la consola (puedes cambiar esto para mostrarlo en la UI)
-    console.log(movimientos)
-
-    // Llamadas a funciones a apoyo
-    agregarMovimientoATabla(movimiento);
-    calcularBalance();
+        // Llamadas a funciones de apoyo
+        agregarMovimientoATabla(movimiento);
+        calcularBalance();
+    } else {
+        alert('Error al guardar el movimiento. Revisa la consola para más detalles.');
+    }
 
 });
 
@@ -56,7 +106,7 @@ function agregarMovimientoATabla(movimiento) {
 
     // Asignar los valores de el objeto creado a las celdas
     celdaConcepto.textContent = movimiento.concepto;
-    celdaImporte.textContent = movimiento.importe;
+    celdaImporte.textContent = `${movimiento.importe}€`;
     celdaTipo.textContent = movimiento.tipo;
 }
 
@@ -84,9 +134,9 @@ function calcularBalance() {
     const balanceTotal = document.getElementById('balanceTotal');
 
 // Actualizar los valores en el HTML
-    balanceIngresos.textContent = totalIngresos;
-    balanceGastos.textContent = totalGastos
+    balanceIngresos.textContent = `${totalIngresos}€`;
+    balanceGastos.textContent = `${totalGastos}€`;
 
     const balance = totalIngresos - totalGastos;
-    balanceTotal.textContent = balance
+    balanceTotal.textContent = `${balance}€`;
 }
