@@ -28,7 +28,7 @@ async function guardarEnSupabase(movimiento) {
     }
     
     const { data, error } = await supabase
-        .from('movimientos')
+        .from('movimientosToni')
         .insert([movimiento])
         .select();
     
