@@ -1,10 +1,11 @@
 // IMPORTAR un array, porque lo vamos utilizar
 import { movimientos } from './data.js';
 
-// IMPORTAR supabase desde CDN (para proyectos sin bundler)
+// *************************
 // Configuración de Supabase
+// *************************
 const supabaseUrl = 'https://kufbnscaaljjpybnaabg.supabase.co'
-// IMPORTANTE: Reemplaza 'TU_ANON_KEY_AQUI' con tu clave anon/public de Supabase
+// 1 cambio
 const supabaseKey = 'sb_publishable_k-sc2ODvAUFdkmewFX5_HA_o536dkkK'
 
 // Crear cliente de Supabase (se inicializará después de cargar el script)
@@ -21,6 +22,8 @@ function initSupabase() {
 }
 
 // Función para guardar movimiento en Supabase
+// Utilidad de la función async/await para manejar la promesa, y 
+// una promesa es un valor que puede estar disponible ahora, en el futuro o nunca.
 async function guardarEnSupabase(movimiento) {
     if (!supabase) {
         console.error('Supabase no está inicializado');
@@ -28,6 +31,8 @@ async function guardarEnSupabase(movimiento) {
     }
     
     const { data, error } = await supabase
+    // Nombre de la tabla en Supabase
+    // 2 cambio
         .from('movimientosToni')
         .insert([movimiento])
         .select();
@@ -43,6 +48,10 @@ async function guardarEnSupabase(movimiento) {
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', initSupabase);
+
+// **********************************
+// FIN de supabase
+// **********************************
 
 
 // DOM de los nodos del formulario
